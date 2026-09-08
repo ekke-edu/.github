@@ -5,6 +5,8 @@ on:
     types: [opened]
   pull_request:
     types: [opened]
+  discussion:
+    types: [created]
 
 jobs:
   welcome:
@@ -12,20 +14,42 @@ jobs:
     permissions:
       issues: write
       pull-requests: write
+      discussions: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Welcome new contributor
-        uses: peter-evans/create-or-update-comment@v4
+      - name: Welcome Commenter
+        uses: actions/github-script@v7
         with:
-          issue-number: ${{ github.event.issue.number || github.event.pull_request.number }}
-          body: |
-            Szia @${{ github.actor }}! 👋 Köszönjük, hogy megnyitottad ezt a bejegyzést.
+          script: |
+            const eventName = context.eventName;
+            const username = context.payload.sender.login;
             
-            Kérjük, mielőtt továbbhaladsz, ellenőrizd az alábbiakat:
+            let actionType = 'bejegyzést';
+            if (eventName === 'issues') actionType = 'Issue-t';
+            if (eventName === 'pull_request') actionType = 'Pull Requestet';
+            if (eventName === 'discussion') actionType = 'Discussion témát';
+
+            const welcomeMessage = `Szia @${username}! 👋 Köszönjük, hogy ${actionType} nyitottál.
+            
+            Kérjük, ellenőrizd az alábbi hivatalos útmutatókat:
             - 📖 Olvastad a [Contributing Guidelines](https://github.com/ekke-edu/.github/blob/main/profile/README.md)-t?
-            - 💬 Ha elakadtál vagy kérdésed van, nézz szét a szervezet [GitHub Discussions](https://github.com/orgs/ekke-edu/discussions) felületén!
+            - 💬 Böngéssz a többi téma között a szervezet [GitHub Discussions](https://github.com/orgs/ekke-edu/discussions) felületén!
             - 🔒 Biztonsági kérdésekben lásd a [SECURITY.md](https://github.com/ekke-edu/.github/blob/main/profile/SECURITY.md) irányelveit.
             
-            Sikeres munkát kívánunk! 🚀
+            Sikeres munkát kívánunk! 🚀`;
+
+            if (eventName === 'discussion') {
+              // Discussion hozzászólás GraphQL/REST alapon
+              await github.rest.discussions.createComment({
+                discussion_id: context.payload.discussion.node_id,
+                body: welcomeMessage
+              });
+            } else {
+              // Issue vagy PR hozzászólás
+              const targetNumber = context.payload.issue?.number || context.payload.pull_request.number;
+              await github.rest.issues.createComment({
+                issue_number: targetNumber,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: welcomeMessage
+              });
+            }
