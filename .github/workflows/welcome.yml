@@ -1,0 +1,89 @@
+name: Smart Welcome & Context Bot
+
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+  discussion:
+    types: [created]
+
+jobs:
+  welcome:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+      discussions: write
+    steps:
+      - name: Analyze User & Comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const username = context.payload.sender.login;
+            const eventName = context.eventName;
+            
+            let actionType = 'eseményt';
+            let targetNumber = null;
+            let isDiscussion = false;
+
+            if (eventName === 'issues') {
+              actionType = 'Issue-t';
+              targetNumber = context.payload.issue.number;
+            } else if (eventName === 'pull_request') {
+              actionType = 'Pull Requestet';
+              targetNumber = context.payload.pull_request.number;
+            } else if (eventName === 'discussion') {
+              actionType = 'Discussion témát';
+              isDiscussion = true;
+            }
+
+            // 1. Jogosultság ellenőrzése (ha repó szintű esemény)
+            let permissionLevel = 'student';
+            try {
+              const permResponse = await github.rest.repos.getCollaboratorPermissionLevel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                username: username,
+              });
+              permissionLevel = permResponse.data.permission;
+            } catch (error) {
+              console.log("Nem sikerült lekérdezni a jogosultságot, alapértelmezett szint.");
+            }
+
+            // 2. Szerepkör alapú üzenet
+            let roleSpecificMessage = "";
+            if (permissionLevel === 'admin' || permissionLevel === 'write') {
+              roleSpecificMessage = "🔒 *Megjegyzés: Te írási jogosultsággal rendelkezel (Oktató/Segítő státusz).*";
+            } else {
+              roleSpecificMessage = "💻 *Hallgatói státusz észlelve. Kérjük, ügyelj a szabályzatokra és a tiszta kommunikációra!*";
+            }
+
+            // 3. Üzenet összeállítása
+            const body = `Szia @${username}! 👋 Köszönjük, hogy ${actionType} indítottál.
+
+${roleSpecificMessage}
+
+Kérjük, ellenőrizd az alábbi hivatalos útmutatókat:
+- 📖 Olvastad a [Contributing Guidelines](https://github.com/ekke-edu/.github/blob/main/profile/README.md)-t?
+- 💬 Böngéssz a többi téma között a szervezet [GitHub Discussions](https://github.com/orgs/ekke-edu/discussions) felületén!
+- 🔒 Biztonsági kérdésekben lásd a [SECURITY.md](https://github.com/ekke-edu/.github/blob/main/profile/SECURITY.md) irányelveit.
+
+Sikeres munkát kívánunk! 🚀`;
+
+            // 4. Komment elküldése a megfelelő helyre
+            if (isDiscussion) {
+              // Discussions esetén a discussion node ID-t használjuk válaszként
+              await github.rest.discussions.createComment({
+                discussion_id: context.payload.discussion.node_id,
+                body: body
+              });
+            } else if (targetNumber) {
+              // Issue / PR esetén
+              await github.rest.issues.createComment({
+                issue_number: targetNumber,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body
+              });
+            }
