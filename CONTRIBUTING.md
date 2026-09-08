@@ -1,4 +1,10 @@
-# Útmutató a kurzusfeladatokhoz és projektekhez (Contributing Guidelines)
+[Magyar verzió](#magyar-verzió) | [English version](#english-version)
+
+---
+
+# Magyar verzió
+
+## Útmutató a kurzusfeladatokhoz és projektekhez (Contributing Guidelines)
 
 Üdvözlünk az Eszterházy Károly Katolikus Egyetem (EKKE) Software Engineering kurzusainak fejlesztői felületén! 
 
@@ -58,3 +64,72 @@ Elakadtál a kódolásban vagy nem indul a Docker konténer? Kérjük, ne e-mail
 - Nevek: Változók, függvények és osztályok elnevezésére használj angol nyelvet.
 - Formázás: Használd a kurzusban előírt formázó (linter/formatter) eszközöket mielőtt commitolsz.
 - Kommentek: Ne azt kommenteld, hogy mit csinál a kód (azt a kódnak kell elmondania), hanem azt, hogy miért azt a megoldást választottad!
+
+---
+
+# English version
+
+## Guidelines for Course Assignments and Projects (Contributing Guidelines)
+
+Welcome to the development environment for the Software Engineering courses at Eszterházy Károly Catholic University (EKKE)!
+
+This document summarizes how to work effectively on assignments, the technical requirements for submissions, and the university's expectations regarding the use of artificial intelligence (AI). Please read it carefully at the beginning of every semester!
+
+---
+
+## 1. Workflow (Working on Assignments)
+
+You cannot write directly to the organization's repositories. You must use the standard GitHub workflow to complete assignments:
+
+1. **Fork:** Click the `Fork` button in the upper-right corner of the provided assignment repository to create a copy under your own profile.
+2. **Clone:** Always use the URL of *your own* fork when cloning the repository.
+3. **Environment:** If the assignment requires a Dev Container or a specific Docker/WSL2 environment, follow the setup steps described in the repository's `README.md` file.
+4. **Commit:** Use descriptive commit messages (for example, `feat: add FastAPI endpoint` or `fix: repair database connection`). Messages such as "done", "asd", and "modified" are not acceptable.
+5. **Push & Pull Request (PR):** If the assignment is submitted through GitHub, open a Pull Request from your repository to the original (upstream) repository. Summarize what you implemented in the PR description.
+
+---
+
+## 2. Generative AI Usage Policy
+
+AI tools such as Copilot, ChatGPT, and Claude are a normal part of modern software development. Our goal is not to ban them, but to teach responsible use based on the principles of the **Verification Code Paradigm**.
+
+When you use AI, **YOU are the owner of the code**. You are responsible for ensuring that the code is correct, secure, and consistent with the architecture.
+
+### Supported AI Use
+
+* Brainstorming and system design (architecture, database schemas).
+* Asking for explanations of concepts, technologies, and error messages.
+* Generating boilerplate.
+* Debugging based on logs.
+
+### Strictly PROHIBITED and Considered Plagiarism
+
+* **Blind copy-paste:** Adding generated code to a project without checking or understanding it.
+* **Concealing a lack of knowledge:** Submitting code that you cannot explain line by line during a defense or assessment. *(If you do not understand memory management or the selected algorithm in your own code, the assignment will be invalidated.)*
+* **Disclosing secrets:** Sharing university database passwords, API keys, or other sensitive data with public models.
+
+### AI Usage Statement (Required!)
+
+If you used a generative AI tool to write your code, you must clearly disclose it in the Pull Request description **or** in the source code comments.
+
+*Example in code:*
+```python
+# [AI GENERATED & MODIFIED] Copilot generated the outline of the vector search function; I modified the thresholds.
+```
+
+---
+
+## 3. Asking for Help and Reporting Issues
+
+Are you stuck while coding, or will the Docker container not start? Please do not email screenshots of your code. Instead, use GitHub's built-in tools:
+
+1. Discussions / Issues: Open a new Issue or discussion in the course repository.
+2. Environment details: Always describe your operating system (for example, Windows 11 + WSL2 Ubuntu) and the versions of your tools.
+3. Exact error message: Paste the exact error message from the terminal as text, rather than providing only a screenshot.
+4. Reproduction: Explain what you have tried so far and how we can reproduce the problem.
+
+## 4. Code Quality and Clarity
+
+- Names: Use English for the names of variables, functions, and classes.
+- Formatting: Run the formatter or linter required by the course before committing.
+- Comments: Do not comment on what the code does (the code should express that); explain why you chose the solution instead.

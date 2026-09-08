@@ -1,4 +1,10 @@
-# Viselkedési Kódex (Code of Conduct)
+[Magyar verzió](#magyar-verzió) | [English version](#english-version)
+
+---
+
+# Magyar verzió
+
+## Viselkedési Kódex (Code of Conduct)
 
 Az organizáció elkötelezett amellett, hogy egy nyitott, biztonságos, befogadó és szakmailag támogató környezetet biztosítson minden hallgató és oktató számára.
 
@@ -30,3 +36,42 @@ Ha olyan viselkedést tapasztalsz, amely sérti ezt a Kódexet, vagy kényelmetl
 * **E-mailben:** [szilvasi.istvan.peter@uni-eszterhazy.hu](mailto:szilvasi.istvan.peter@uni-eszterhazy.hu)
 
 Az oktatók fenntartják a jogot a szabályokat megsértő GitHub hozzáférések korlátozására és a szükséges fegyelmi lépések megtételére.
+
+---
+
+# English version
+
+## Code of Conduct
+
+The organization is committed to providing an open, safe, inclusive, and professionally supportive environment for all students and instructors.
+
+---
+
+## Our Principles
+
+We treat one another with respect on the platforms used during courses (GitHub Discussions, Issues, Pull Requests, and classroom consultations). We expect every participant to follow these principles:
+
+* **Professional respect:** Always focus criticism on the code, not on its author. Coding is a learning process, and we learn from mistakes together.
+* **Helpfulness and patience:** Pay special attention to fellow students who are beginners or experiencing difficulties. Mocking or condescending language is not acceptable.
+* **Inclusivity:** Regardless of programming experience or background, everyone should be able to participate in the work with equal opportunity and respect.
+* **Academic integrity:** Respect copyright and the rules governing AI use, and work independently while maintaining a collaborative spirit.
+
+---
+
+## Unacceptable Behavior
+
+The following behavior is not tolerated on GitHub or in university spaces:
+
+* Harassment, personal attacks, or aggressive or exclusionary language.
+* Deliberately discrediting or mocking other people's work.
+* Plagiarism or unauthorized appropriation of another person's intellectual work.
+
+---
+
+## Reporting and Consequences
+
+If you experience or witness behavior that violates this Code of Conduct, or if you feel uncomfortable during a discussion, please report it to an instructor:
+
+* **By email:** [szilvasi.istvan.peter@uni-eszterhazy.hu](mailto:szilvasi.istvan.peter@uni-eszterhazy.hu)
+
+Instructors reserve the right to restrict GitHub access for violations of these rules and to take the necessary disciplinary steps.
