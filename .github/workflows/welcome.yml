@@ -1,12 +1,10 @@
-name: Smart Welcome & Context Bot
+name: Smart Welcome Bot
 
 on:
   issues:
     types: [opened]
   pull_request:
     types: [opened]
-  discussion:
-    types: [created]
 
 jobs:
   welcome:
@@ -14,31 +12,17 @@ jobs:
     permissions:
       issues: write
       pull-requests: write
-      discussions: write
     steps:
       - name: Analyze User & Comment
         uses: actions/github-script@v7
         with:
           script: |
             const username = context.payload.sender.login;
-            const eventName = context.eventName;
-            
-            let actionType = 'eseményt';
-            let targetNumber = null;
-            let isDiscussion = false;
+            const issueNumber = context.payload.issue?.number || context.payload.pull_request.number;
+            const isPR = context.payload.pull_request !== undefined;
+            const actionType = isPR ? 'Pull Requestet' : 'Issue-t';
 
-            if (eventName === 'issues') {
-              actionType = 'Issue-t';
-              targetNumber = context.payload.issue.number;
-            } else if (eventName === 'pull_request') {
-              actionType = 'Pull Requestet';
-              targetNumber = context.payload.pull_request.number;
-            } else if (eventName === 'discussion') {
-              actionType = 'Discussion témát';
-              isDiscussion = true;
-            }
-
-            // 1. Jogosultság ellenőrzése (ha repó szintű esemény)
+            // 1. Jogosultság ellenőrzése a repón
             let permissionLevel = 'student';
             try {
               const permResponse = await github.rest.repos.getCollaboratorPermissionLevel({
@@ -56,34 +40,25 @@ jobs:
             if (permissionLevel === 'admin' || permissionLevel === 'write') {
               roleSpecificMessage = "🔒 *Megjegyzés: Te írási jogosultsággal rendelkezel (Oktató/Segítő státusz).*";
             } else {
-              roleSpecificMessage = "💻 *Hallgatói státusz észlelve. Kérjük, ügyelj a szabályzatokra és a tiszta kommunikációra!*";
+              roleSpecificMessage = "💻 *Hallgatói státusz észlelve. Kérjük, ügyelj a Fork & Pull Request munkafolyamatra!*";
             }
 
             // 3. Üzenet összeállítása
-            const body = `Szia @${username}! 👋 Köszönjük, hogy ${actionType} indítottál.
+            const body = `Szia @${username}! 👋 Köszönjük, hogy ${actionType} nyitottál.
 
 ${roleSpecificMessage}
 
-Kérjük, ellenőrizd az alábbi hivatalos útmutatókat:
+Kérjük, mielőtt továbbhaladsz, ellenőrizd az alábbiakat:
 - 📖 Olvastad a [Contributing Guidelines](https://github.com/ekke-edu/.github/blob/main/profile/README.md)-t?
-- 💬 Böngéssz a többi téma között a szervezet [GitHub Discussions](https://github.com/orgs/ekke-edu/discussions) felületén!
+- 💬 Ha elakadtál vagy kérdésed van, nézz szét a szervezet [GitHub Discussions](https://github.com/orgs/ekke-edu/discussions) felületén!
 - 🔒 Biztonsági kérdésekben lásd a [SECURITY.md](https://github.com/ekke-edu/.github/blob/main/profile/SECURITY.md) irányelveit.
 
 Sikeres munkát kívánunk! 🚀`;
 
-            // 4. Komment elküldése a megfelelő helyre
-            if (isDiscussion) {
-              // Discussions esetén a discussion node ID-t használjuk válaszként
-              await github.rest.discussions.createComment({
-                discussion_id: context.payload.discussion.node_id,
-                body: body
-              });
-            } else if (targetNumber) {
-              // Issue / PR esetén
-              await github.rest.issues.createComment({
-                issue_number: targetNumber,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: body
-              });
-            }
+            // 4. Komment elküldése
+            await github.rest.issues.createComment({
+              issue_number: issueNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
