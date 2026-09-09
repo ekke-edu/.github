@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Szervezeti Dokumentációk</title>
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-primary: #1f2328;
+            --text-secondary: #57606a;
+            --accent-color: #0969da;
+            --border-color: #d0d7de;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; 
+            max-width: 900px; 
+            margin: 60px auto; 
+            padding: 0 20px; 
+            line-height: 1.6; 
+            background: var(--bg-color); 
+            color: var(--text-primary); 
+        }
+
+        header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        h1 { 
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
+            gap: 20px; 
+        }
+
+        .card { 
+            background: var(--card-bg); 
+            padding: 24px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            box-shadow: var(--shadow); 
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card h3 { 
+            margin-top: 0; 
+            margin-bottom: 8px; 
+            font-size: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .card a { 
+            color: var(--accent-color); 
+            text-decoration: none; 
+            font-weight: 600; 
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card a:hover { 
+            text-decoration: underline; 
+        }
+
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Központi Referencia és Dokumentáció</h1>
+    <p>Az egyetemi kurzusokhoz és projektekhez tartozó hivatalos, kétnyelvű tudásbázisok.</p>    
+  
+    <div class="grid">
+        <div class="card">
+            <div>
+                <h3>Felhőalapú számítástechnika</h3>
+                <p>Azure portál, Terraform (IaC), konténerizált fejlesztői környezetek és CI/CD automatizáció alapjai.</p>
+            </div>
+            <a href="/cloud-computing/">Dokumentáció megnyitása &rarr;</a>
+        </div>
+
+        <div class="card">
+            <div>
+                <h3>Komplex MI alkalmazások fejlesztése</h3>
+                <p>FastAPI, RAG architekturális minták, MongoDB, Neo4j gráfalapú adatok és MLOps megfigyelhetőség.</p>
+            </div>
+            <a href="/komplex-mi-alkalmazasok/">Dokumentáció megnyitása &rarr;</a>
+        </div>
+
+        <div class="card">
+            <div>
+                <h3>Adatbázisrendszerek II. (Pokémon Kiadás)</h3>
+                <p>Oracle PL/SQL gyakorlatok, Kanto régió adatbázis-kezelése, FastAPI integráció és automatizált tesztek.</p>
+            </div>
+            <a href="/advanced-databases-2/">Dokumentáció megnyitása &rarr;</a>
+        </div>
+
+        <div class="card">
+            <div>
+                <h3>Korszerű adatbázisok</h3>
+                <p>MongoDB dokumentum-orientált tárolás, aggregációs folyamatok és Neo4j Cypher alapú gráfmodellezés.</p>
+            </div>
+            <a href="/modern-databases/">Dokumentáció megnyitása &rarr;</a>
+        </div>
+    </div>
+  </body>
+</html>
