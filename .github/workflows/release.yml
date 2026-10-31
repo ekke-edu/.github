@@ -1,0 +1,51 @@
+name: Shared GitHub release
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: Existing tag to publish as a GitHub Release
+        required: true
+        type: string
+      artifact-name:
+        description: Optional workflow artifact containing release files
+        required: false
+        default: ""
+        type: string
+permissions: {}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out the tagged source and history
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Download release files
+        if: inputs.artifact-name != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: release-assets
+      - name: Create or update GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        shell: bash
+        run: |
+          shopt -s nullglob
+          assets=(release-assets/*)
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            if (("${#assets[@]}" > 0)); then
+              gh release upload "$RELEASE_TAG" "${assets[@]}" --clobber
+            fi
+          elif (("${#assets[@]}" > 0)); then
+            gh release create "$RELEASE_TAG" --title "$RELEASE_TAG" --generate-notes "${assets[@]}"
+          else
+            gh release create "$RELEASE_TAG" --title "$RELEASE_TAG" --generate-notes
+          fi

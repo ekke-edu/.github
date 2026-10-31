@@ -90,3 +90,16 @@ Since I am an external lecturer and not on campus every day, you can reach me mo
 
 * **📧 E-mail:** [szilvasi.istvan.peter@uni-eszterhazy.hu]
 * **🕒 Consultation:** Upon request after classes, or online by prior arrangement.
+
+
+---
+
+## Megosztott kiadási munkafolyamat / Shared release workflow
+
+Az EKKE-EDU repók a közös GitHub Release-létrehozást innen hívhatják meg:
+
+`ekke-edu/.github/.github/workflows/release.yml@main`
+
+A hívó workflow átadja a már létező verziótaget. Opcionális workflow artifactot is csatolhat a Release-hez. A csomagregistryk publikálása továbbra is az adott csomag saját workflow-jában marad.
+
+EKKE-EDU repositories can use the organization-managed GitHub Release workflow above. The caller passes an existing version tag and may pass a workflow artifact to attach. Publishing to package registries remains repository-specific.
