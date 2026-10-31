@@ -12,9 +12,6 @@ on:
         required: false
         default: ""
         type: string
-    permissions:
-      contents: write
-
 permissions: {}
 
 jobs:
